@@ -1,0 +1,90 @@
+/* INDEX.PHP */
+
+body {
+	margin: 0;
+	background-color: #ddddff;
+	-webkit-font-smoothing: antialiased; /* font smoothing... */
+	text-rendering: optimizeLegibility;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004); /* ... hasta acá */
+	font-family: "Arial", sans-serif;
+	font-size:80%;
+	color: #555;
+}
+#div_body {
+}
+#barra_recuadro {
+	width: 100%;
+	background-color: white;
+	padding: 50px 0 50px 0;
+	margin-top: 100px;
+	text-align: center;
+}
+#recuadro {	
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	/*margin: 0 auto;
+	padding: 100px;*/
+}
+#form {
+	display: inline-block; /* NECESARIO */
+}
+.boton{
+	font-weight: bold;
+	background-color: #aaaaff;
+	border: 0;
+	padding: 5px 10px 5px 10px;
+	border-radius: 4px;
+	color: white;
+}
+.boton:hover{
+	background-color: #6666dd;
+}
+.boton:active{
+	background-color: #000088;
+}
+.text_input{
+	border: 1px solid #999;
+	border-radius: 3px;
+}
+#errormsg {
+	color: #c00;
+}
+
+/* MAIN.PHP */
+
+#body_wrap{
+	font-family: "Verdana", sans-serif;
+	text-align:center;
+	margin: 40px 100px;
+}
+#tabla{
+	height : 1px;
+	background-color:#FFFAF4;
+	text-align: center;
+	border-collapse:collapse;
+	box-shadow: 0px 0px 6px 0px #BBBBBB;
+	vertical-align: middle;
+	margin:0 auto;
+}
+.th_switches{
+	color: #002266;
+	font-weight:bold;
+	background-color: #EEF6FF;
+}
+.td_switches{
+	border : 1px solid #8899BB;
+	width : 100px;
+	padding: 10px;
+	height : 100%;
+}
+
+#switch:hover{
+	width: 101%;
+}
+h1,h2{
+}
+#output{
+	width:200px;
+	margin: 0  auto;
+}

@@ -4,7 +4,7 @@
 	<head>
 		<title>Casa Inteligente</title>
 		<meta charset="UTF-8">
-		<link rel="stylesheet" href="main_styles.css" type="text/css">
+		<link rel="stylesheet" href="styles.css" type="text/css">
 <?php
 	function backLink(){
 		echo "<br><br><a href='index.php'>Volver</a>";
@@ -251,7 +251,7 @@
 			/* enviar comando al arduino */
 
 			// ESTE DIRECTORIO DEBIERA SER DEPENDIENTE DEL NOMBRE DE USUARIO. EJEMPLO, CARPETA PERSONAL DEL COMPUTADOR.
-			$respuesta_shell=$conexion->exec("cd Domotica; ./client $comando");
+			$respuesta_shell=$conexion->exec("./client $comando");
 			//echo $respuesta_shell;
 			if ((strstr($respuesta_shell, "Error"))||(strstr($respuesta_shell, "bash"))){
 				echo "Error (web): cliente no disponible: '$respuesta_shell'";
@@ -273,9 +273,9 @@
 					var thead = document.createElement("thead");
 					thead.setAttribute("id","thead");
 					var tabla_header=document.createElement("tr");
-					tabla_header.innerHTML="<td>Nombre Dispositivo</td>"
+					tabla_header.innerHTML="<td class='th_switches'>Nombre Dispositivo</td>"
 					for (var param=0;param<param_names.length;param++){
-						tabla_header.innerHTML=tabla_header.innerHTML+"<td>"+param_names[param]+"</td>";
+						tabla_header.innerHTML=tabla_header.innerHTML+"<td class='th_switches'>"+param_names[param]+"</td>";
 					}
 					tabla_header.setAttribute("id","tabla_header");
 					thead.appendChild(tabla_header);
@@ -285,15 +285,15 @@
 					/* agregar filas según cuántos elementos haya */
 					for (var i=0;i<disp_names.length;i++){
 						var fila=document.createElement("tr");
-						fila.innerHTML+="<td>"+disp_names[i]+"</td>";
+						fila.innerHTML+="<td class='td_switches'>"+disp_names[i]+"</td>";
 						for (var j=0; j<param_names.length; j++){
 							var texto="";
 							switch (param_names[j]){
 								case "power":
-									texto="<td><input type='image' id='switch' width='95%' src='images/switch_"+valores[i][j]+".png' alt='switch_"+valores[i][j]+".png' onclick='enviar("+i+","+0+","+(valores[i][j]==0?1:0)+");' /></td>";
+									texto="<td class='td_switches'><input type='image' id='switch' width='95%' src='images/switch_"+valores[i][j]+".png' alt='switch_"+valores[i][j]+".png' onclick='enviar("+i+","+0+","+(valores[i][j]==0?1:0)+");' /></td>";
 									break;
 								default:
-									texto="<td>"+valores[i][j]+"</td>";
+									texto="<td class='td_switches'>"+valores[i][j]+"</td>";
 							}
 							fila.innerHTML+=texto;
 						}
@@ -310,7 +310,7 @@
 		?>
 		<br><div id="output"></div>
 		<div id="debug"></div>
-		<br><a href="logout.php">Logout</a>
+		<br><a href="logout.php" class="boton">Logout</a>
 	</div>	
 	</body>
 </html>

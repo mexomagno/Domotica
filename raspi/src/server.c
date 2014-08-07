@@ -17,14 +17,18 @@
 typedef struct dispositivo{
 	char *nombre;
 	int power;
-	/* más posibles parámetros*/
+	/* inserte parametros aqui */
+
+	unsigned char pin;
 }*DISP;
 
 /* Arreglo de dispositivos, para llevar control de estados */
 DISP *dispositivos;
 char *nombres[NDISP]={"LED_13"};
+unsigned char pines[NDISP]={1};
 
 void initDisp(){
+	char comando[30];
 	/* recorrer arreglo de dispositivos y asignar un nuevo valor */
 	dispositivos = (DISP*)malloc(sizeof(DISP)*NDISP);
 	int i;
@@ -32,6 +36,9 @@ void initDisp(){
 		dispositivos[i]=(DISP)malloc(sizeof(DISP));
 		dispositivos[i]->nombre=nombres[i];
 		dispositivos[i]->power=0;
+		dispositivos[i]->pin=pines[i];
+		sprintf(comando,"rpio --setoutput %d",pines[i]);
+		system(comando);
 	}
 }
 
@@ -58,6 +65,7 @@ void getDisps(char *resp){
 }
 
 void updateDisps(char *input){
+	char comando[30];
 	printf("output es: %s\n",input);
 	/* parsear el string enviado por client. Recordar que es de la forma A-B-C con A, B, numeros y C string */
 	int index=0;//indice que recorre el string
@@ -66,14 +74,14 @@ void updateDisps(char *input){
 	while (input[index] != '-'){
 		disp+=disp*10 + (input[index++]-'0');
 	}
-	printf("disp=%d\n", disp);
+	if (VERBOSE) printf("disp=%d\n", disp);
 	/* obtener parametro */
 	int param=0;
 	index++;
 	while (input[index] != '-'){
 		param+=param*10 + (input[index++]-'0');
 	}
-	printf("param=%d\n",param);
+	if (VERBOSE) printf("param=%d\n",param);
 	/* obtener valor */
 	char string[BUF_SIZE];
 	int string_index=0;
@@ -82,7 +90,7 @@ void updateDisps(char *input){
 		string[string_index++]=input[index++];
 	}
 	string[string_index]='\0';
-	printf("valor es %s\n",string);
+	if (VERBOSE) printf("valor es %s\n",string);
 	/* interpretar el valor HARDCODED*/
 	int valor=0;
 	if (!strcmp(string, "ON"))
@@ -92,8 +100,11 @@ void updateDisps(char *input){
 	/* actualizar dispositivo */
 	switch (param){
 		case 0:
-			printf("Actualizo dispositivo...\n");
+			//printf("Actualizo dispositivo...\n");
 			dispositivos[disp]->power=valor;
+			/* prender o apagar pin indicado */
+			sprintf(comando,"rpio -s %d:%d",pines[disp],valor);
+			system(comando);
 			printf("Actualizado.\n");
 			break;
 	}
@@ -174,7 +185,7 @@ int serialReadUntil(int fd, char *buf, char until){
 	printf("Arduino dice: '%s'\n", buf);
 	return strlen(buf)+1;
 }
-
+/*
 int serialWrite(int fd, const char* str){
     int len = strlen(str);
     int n,m;
@@ -182,7 +193,7 @@ int serialWrite(int fd, const char* str){
     	return -1;
     checkError((m=write(fd, "\0" ,1))== -1, "Error (server): no se pudo enviar null character", 1);
     return 0;
-}
+}*/
 int serialBegin(char pathout[]){
 	int serial;
 	if (checkError((serial=open(pathout, O_RDWR | O_NOCTTY)) == -1, "Error (server): No se pudo abrir el puerto serial (lectura)", 1));
@@ -231,7 +242,7 @@ void main(){
 		exit(1);
 	if (VERBOSE) printf("LISTO\n");
 	/* es necesario tener abierto el serial para lectura, sino el arduino se resetea! */
-	if (VERBOSE) printf("Comprobando disponibilidad de placa Arduino... ");
+	/*if (VERBOSE) printf("Comprobando disponibilidad de placa Arduino... ");
 	char pathout[PATH_SIZE];
 	getArduinoPort(pathout);
 	if (checkError(pathout[0]==0, "Error (server): Arduino no disponible (lectura). Cerrando,..",1))
@@ -240,7 +251,7 @@ void main(){
 	if (VERBOSE) printf("Abriendo puerto serial arduino para lectura... "); 
 	int serial=serialBegin(pathout);
 	if (VERBOSE) printf("LISTO\n");
-
+	*/
 	initDisp();
 	/***** LISTO PARA ATENDER CLIENTES *****/
 	int conexion;//con el cliente
@@ -256,13 +267,13 @@ void main(){
 		conexion=j_accept(socket);
 		if (VERBOSE) printf("Cliente conectado\n");
 		/* 2: Ver disponibilidad del arduino */
-		if (VERBOSE) printf("Comprobando disponibilidad de placa Arduino... ");
+		/*if (VERBOSE) printf("Comprobando disponibilidad de placa Arduino... ");
 		getArduinoPort(path);
 		if (checkError(path[0]==0, "Error (server): Arduino no disponible", conexion)){
 			continue;
 		}
 		else 
-		if (VERBOSE) printf("LISTO\n");
+		if (VERBOSE) printf("LISTO\n");*/
 		/* 3: Atender cliente */
 		/* 3.1: leer lo que envía el cliente y guardarlo en input*/
 		if (VERBOSE) printf("Leyendo datos del cliente...");
@@ -279,22 +290,22 @@ void main(){
 		else{
 			/* 3.3: Enviar datos al arduino */
 			if (VERBOSE) printf("Cliente envía '%s'\n", input);
-			if (VERBOSE) printf("Enviando input al arduino... ");
-			if (serialWrite(serial, input)==-1){
+			if (VERBOSE) printf("Configurando dispositivo... ");
+			/*if (serialWrite(serial, input)==-1){
 				write(conexion, "Error (server): Arduino no disponible", strlen("Error (server): Arduino no disponible"));
 				write(conexion, "\0", 1);
 				printf("Cerrando servidor...\n"); //EN EL FUTURO, TRATAR DE RECONECTAR EL ARDUINO
 				exit(1);
 			}
-			if (VERBOSE) printf("LISTO,  Datos enviados\nLeyendo respuesta del arduino... ");
+			if (VERBOSE) printf("LISTO,  Datos enviados\nLeyendo respuesta del arduino... ");*/
 			/* 3.4: Enviar respuesta del arduino a la peticion del cliente */
-			n = serialReadUntil(serial, output, '\n');
+			/*n = serialReadUntil(serial, output, '\n');*/
 			/* actualizar estado de dispositivos en arreglo de structs dispositivos*/
 			updateDisps(input);
 		}
 		//write(conexion, "Arduino dice: ", strlen("Arduino dice: "));
 		write(conexion, output, strlen(output)+1);
-		if (VERBOSE) printf("Cliente atendido con éxito\n\n");
+		if (VERBOSE) printf("\nCliente atendido con éxito\n\n");
 	}
 	/* Posibles mejoras futuras:
 		-Implementar dos sockets: el primero escucha y el segundo atiende mediante un thread*/

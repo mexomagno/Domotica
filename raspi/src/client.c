@@ -1,4 +1,3 @@
-/********** Auto-generado por makecode.sh **********/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -6,18 +5,25 @@
 #include "jsocket6.h"
 
 #define BUF_SIZE 200
-#define CVERBOSE 0
-#define NDISP 3
+#define CVERBOSE 1
+#define NDISP 1
 #define NPARAMS 1 /* DEBE CALZAR CON LOS ELEMENTOS DEL ARREGLO params */
 
 char *params[NPARAMS]={"power"}; /* EXTENSIBLE */
 //char *power_values[]={"ON", "OFF"};
 //char **values[]={power_values};
 
+void usage(){
+   printf("Uso: ./client [[getDisps] || [disp_id opc val]]\n");
+   printf("\tgetDisps\t: Entrega lista de dispositivos conectados.\n");
+   printf("\tdisp_id opc val\t: Setea el parámetro opc del dispositivo disp_id con el valor val.\n");
+}
+
 void checkError(char cond, char errorstring[]){
    if (cond){
       //printf("%s\n", strerror(errno));
       printf("Error (client): %s\n", errorstring);
+      usage();
       exit(1);
    }
 }
@@ -54,7 +60,7 @@ int isValue(char *candidato, int param_index){
    return 0;
 }
 
-/* instrucciones posibles: (getnames), (disp_id opc val) */
+/* instrucciones posibles: (getDisps), (disp_id opc val) */
 main(int argc, char *argv[]) {
    /* Validaciones */
    /* 1: validar cantidad de argumentos */
@@ -77,7 +83,7 @@ main(int argc, char *argv[]) {
       /* 2.2: validar parámetro a configurar */
       char *param=argv[2];
       param_index;
-      checkError((param_index=isParam(param)==-1),"No existe el parámetro para configurar");
+      checkError((param_index=isParam(param)==-1),"Opción inválida");
       /* 2.3: validar valor del parametro */
       value=argv[3];
       checkError(isValue(value, param_index)==0, "Valor inválido para el parámetro");

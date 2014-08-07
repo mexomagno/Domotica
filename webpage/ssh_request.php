@@ -1,9 +1,9 @@
 <?php
 	/* conectar con el servidor de su casa */
 	/*Protocolo de comunicación: 
-		Se envía al arduino tres secciones: dispositivo a setear, separador (guion), caracteristica a setear, 
+		Se envía al raspberry tres secciones: dispositivo a setear, separador (guion), caracteristica a setear, 
 		separador (guion) y valor a setear (Ejemplo: ON, OFF).
-		Los mensajes para el arduino se ven de la forma "a-b-c" que significa "configura propiedad b del dispositivo
+		Los mensajes para el raspberry se ven de la forma "a-b-c" que significa "configura propiedad b del dispositivo
 		a con valor c" */
 	function backLink(){
 		echo "<br><br><a href='index.php'>Volver</a>";
@@ -80,10 +80,6 @@
 	/****** ETAPA 2: preparar conexión SSH ******/
 	set_include_path('phpseclib');
 	include('Net/SSH2.php');
-	//$server="mexomagno.ydns.eu";
-	//$port=12222;
-	//$user="servidor";
-	//$pass="abcd-1234-!";
 	$conexion = new Net_SSH2($server,$port);
 	if (!$conexion->login($user, $pass)){
 		exit("Error (web): No se pudo establecer conexión con el servidor");
@@ -91,19 +87,19 @@
 
 	/****** ETAPA 3: enviar comando al arduino, cumpliendo protocolo ******/
 	$comando = "$disp power $value";
-	$ruta_arduino= "/dev/serial/by-id/".$conexion->exec("ls /dev/serial/by-id/ | grep arduino");
-	if ($debug) echo "ruta al arduino: ".$ruta_arduino."<br>";
+	//$ruta_arduino= "/dev/serial/by-id/".$conexion->exec("ls /dev/serial/by-id/ | grep arduino");
+	//if ($debug) echo "ruta al arduino: ".$ruta_arduino."<br>";
 	/* validar que arduino está conectado */
-	if (!(strrpos($ruta_arduino, "no se puede acceder a")===false)){
+	/*if (!(strrpos($ruta_arduino, "no se puede acceder a")===false)){
 		exit("Error (web): Arduino no está disponible");
-	}
-	/* enviar comando al arduino */
+	}*/
+	/* enviar comando al raspberry */
 
 	// ESTE DIRECTORIO DEBIERA SER DEPENDIENTE DEL NOMBRE DE USUARIO. EJEMPLO, CARPETA PERSONAL DEL COMPUTADOR.
-	$respuesta_shell=$conexion->exec("cd Domotica; ./client $comando");
+	$respuesta_shell=$conexion->exec("./client $comando");
 	//echo $respuesta_shell;
 	if (strstr($respuesta_shell, "Error")){
-		exit("Error (web): no se pudo enviar comando al Arduino: ".$respuesta_shell);
+		exit("Error (web): no se pudo enviar comando al Raspberry: ".$respuesta_shell);
 	}
 	/****** ETAPA 4: leer lo que el arduino tenga que decir ******/
 	/****** ETAPA 5 Y FINAL: responder a la aplicación web ******/
