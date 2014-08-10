@@ -159,7 +159,7 @@ int checkError(char cond, char errorstring[],int fd){
 			if (VERBOSE) printf("\nCliente desconectado, con errores: %s: \n", errorstring);
 		}
 		else{
-			if (VERBOSE) printf("Se ha perdido la conexión con el Arduino\n");
+			if (VERBOSE) printf("Error al iniciar el servidor de domótica\n");
 		}
 		return 1;
 	}

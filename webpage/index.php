@@ -5,7 +5,11 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="Controle toda su casa desde cualquier parte del mundo!"/>
 		<meta name="author" content="Maximiliano Castro"/>
-		<link rel="shortcut icon" href="http://sstatic.net/stackoverflow/img/favicon.ico">
+		<link rel="shortcut icon" href="images/favicon_jake.ico">
+		<!-- JQUERY para animaciones -->
+		<script src="include/jquery-1.10.2.js"></script>
+		<script src="include/jquery-ui.js"></script>
+		<script src="jquery_css.js" type="text/javascript"></script>
 		<!--<script language="javascript" src="scripts.js" type="text/javascript"></script>-
 		<script language="javascript" src="index.js" type="text/javascript"></script>-->
 		<link rel="stylesheet" type="text/css" href="styles.css">
@@ -25,29 +29,31 @@
 		</script>
 	</head>
 	<body>
-		<div id="div_body">
-			<div id="barra_recuadro">
-				<div id="recuadro">
-					<h1>Inicio de sesión</h1>
-					<form method="POST" enctype="multipart/form-data" action="main.php" id="form">
-						<table>
-							<tr>
-								<td><label for="user">Usuario: </label></td><td><input id="user" name="user" type="text" class="text_input" onclick="clearError();"></td>
-							</tr>
-							<tr>
-								<td><label for="pass">Contraseña: </label></td><td><input id="pass" name="pass" type="password" class="text_input" onclick="clearError();"></td>
-							</tr>
-						</table>
-						<br>
-						<input type="submit" value="Ingresar" id="boton_ingresar" class="boton">
-					</form>
-					<br><br>
-					<div id="errormsg">
-						<?php 
-							if (isset($_GET['msg'])) 
-							//echo "Usuario y/o contraseña incorrectos"
-								echo "<script type='text/javascript'>\nwriteError(".$_GET['msg'].");</script>";
-						?></div>
+		<img id="background" src="images/background.jpg" alt="background.jpg">
+		<div id="screen"></div>
+		<div id="barra_recuadro_index">
+			<div id="recuadro_index">
+				<img id="index_logo" src="images/logo.png" alt="index_logo.png">
+				<h1>Inicio de sesión</h1>
+				<form method="POST" enctype="multipart/form-data" action="main.php" id="form">
+					<table>
+						<tr>
+							<td><label for="user">Usuario: </label></td><td><input id="user" name="user" type="text" class="text_input" onclick="clearError();"></td>
+						</tr>
+						<tr>
+							<td><label for="pass">Contraseña: </label></td><td><input id="pass" name="pass" type="password" class="text_input" onclick="clearError();"></td>
+						</tr>
+					</table>
+					<br>
+					<input type="submit" value="Ingresar" id="boton_ingresar" class="boton">
+				</form>
+				<br><br>
+				<div id="errormsg">
+					<?php 
+						if (isset($_GET['msg'])) 
+						//echo "Usuario y/o contraseña incorrectos"
+							echo "<script type='text/javascript'>\nwriteError(".$_GET['msg'].");</script>";
+					?>
 				</div>
 			</div>
 		</div>

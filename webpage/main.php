@@ -4,7 +4,10 @@
 	<head>
 		<title>Casa Inteligente</title>
 		<meta charset="UTF-8">
+		<meta name="description" content="Controle toda su casa desde cualquier parte del mundo!"/>
+		<meta name="author" content="Maximiliano Castro"/>
 		<link rel="stylesheet" href="styles.css" type="text/css">
+		<link rel="shortcut icon" href="images/favicon_jake.ico">
 <?php
 	function backLink(){
 		echo "<br><br><a href='index.php'>Volver</a>";
@@ -221,97 +224,106 @@
 		    return req;
 		}
 	</script>
+	<script src="include/jquery-1.10.2.js"></script>
+	<script src="include/jquery-ui.js"></script>
+	<script src="jquery_css.js" type="text/javascript"></script>
 	</head>
 	<body onload="drawTable();">
-	<div id="body_wrap">
-	<?php
-		if (!isset($_SESSION['user_id']))
-			$_SESSION['user_id']=$user_id;
-		if ($debug) echo "sesion: ".session_id();
-		echo "<h2>Bienvenido/a, $user_nombre!</h2>
-		<p>Su dirección es: $user_direccion.</p>";
-?>		<p>Testeando control remoto</p>
-		<div id="divtabla"></div>
-<?php 	/* generar botones de control */
-		set_include_path('phpseclib');
-		include('Net/SSH2.php');
-		$conexion = new Net_SSH2($user_server_host,$user_server_port);
-		if (!$conexion->login($user_server_username, $user_server_pass)){
-			echo("Error (web): No se pudo establecer conexión con el servidor");
-		}
-		else{
-			/****** ETAPA 3: enviar comando al arduino, cumpliendo protocolo ******/
-			$comando = "getDisps";
-			// $ruta_arduino= "/dev/serial/by-id/".$conexion->exec("ls /dev/serial/by-id/ | grep arduino");
-			// if ($debug) echo "ruta al arduino: ".$ruta_arduino."<br>";
-			// /* validar que arduino está conectado */
-			// if (!(strrpos($ruta_arduino, "no se puede acceder a")===false)){
-			// 	exit("Error (web): Arduino no está disponible");
-			// }
-			/* enviar comando al arduino */
+		<img id="background" src="images/background.jpg" alt="background.jpg">
+		<div id="screen"></div>
+		<div id="body_wrap">
+			<div id="barra_recuadro_main">
+				<div id="recuadro_main">
+				<?php
+					if (!isset($_SESSION['user_id']))
+						$_SESSION['user_id']=$user_id;
+					if ($debug) echo "sesion: ".session_id();
+					echo "<h2>Bienvenido/a, $user_nombre!</h2>
+					<p>Su dirección es: $user_direccion.</p>";
+			?>
+					<div id="divtabla"></div>
+			<?php 	/* generar botones de control */
+					set_include_path('phpseclib');
+					include('Net/SSH2.php');
+					$conexion = new Net_SSH2($user_server_host,$user_server_port);
+					if (!$conexion->login($user_server_username, $user_server_pass)){
+						echo("Error (web): No se pudo establecer conexión con el servidor");
+					}
+					else{
+						/****** ETAPA 3: enviar comando al arduino, cumpliendo protocolo ******/
+						$comando = "getDisps";
+						// $ruta_arduino= "/dev/serial/by-id/".$conexion->exec("ls /dev/serial/by-id/ | grep arduino");
+						// if ($debug) echo "ruta al arduino: ".$ruta_arduino."<br>";
+						// /* validar que arduino está conectado */
+						// if (!(strrpos($ruta_arduino, "no se puede acceder a")===false)){
+						// 	exit("Error (web): Arduino no está disponible");
+						// }
+						/* enviar comando al arduino */
 
-			// ESTE DIRECTORIO DEBIERA SER DEPENDIENTE DEL NOMBRE DE USUARIO. EJEMPLO, CARPETA PERSONAL DEL COMPUTADOR.
-			$respuesta_shell=$conexion->exec("./client $comando");
-			//echo $respuesta_shell;
-			if ((strstr($respuesta_shell, "Error"))||(strstr($respuesta_shell, "bash"))){
-				echo "Error (web): cliente no disponible: '$respuesta_shell'";
-			}
-			else{
-				/* si se está acá, se recibió los nombres de los dispositivos.*/
-				/* Generar tabla con los elementos disponibles.*/
-				?><script type='text/javascript'><?php
-				/* crear arreglos con nombres de dispositivos, parámetros ajustables y valores de parámetros para cada dispositivo*/
-				echoDisps($respuesta_shell);
-				?>
-				//Espacio para los scripts
-				function drawTable(){
-					//obtener div donde irá la tabla
-					var divdebug=document.getElementById("debug");
-					var divtabla=document.getElementById("divtabla");
-					var tabla=document.createElement("table");
-					tabla.setAttribute("id","tabla");
-					var thead = document.createElement("thead");
-					thead.setAttribute("id","thead");
-					var tabla_header=document.createElement("tr");
-					tabla_header.innerHTML="<td class='th_switches'>Nombre Dispositivo</td>"
-					for (var param=0;param<param_names.length;param++){
-						tabla_header.innerHTML=tabla_header.innerHTML+"<td class='th_switches'>"+param_names[param]+"</td>";
-					}
-					tabla_header.setAttribute("id","tabla_header");
-					thead.appendChild(tabla_header);
-					tabla.appendChild(thead);
-					var tbody = document.createElement("tbody");
-					tbody.setAttribute("id","tbody");
-					/* agregar filas según cuántos elementos haya */
-					for (var i=0;i<disp_names.length;i++){
-						var fila=document.createElement("tr");
-						fila.innerHTML+="<td class='td_switches'>"+disp_names[i]+"</td>";
-						for (var j=0; j<param_names.length; j++){
-							var texto="";
-							switch (param_names[j]){
-								case "power":
-									texto="<td class='td_switches'><input type='image' id='switch' width='95%' src='images/switch_"+valores[i][j]+".png' alt='switch_"+valores[i][j]+".png' onclick='enviar("+i+","+0+","+(valores[i][j]==0?1:0)+");' /></td>";
-									break;
-								default:
-									texto="<td class='td_switches'>"+valores[i][j]+"</td>";
-							}
-							fila.innerHTML+=texto;
+						// ESTE DIRECTORIO DEBIERA SER DEPENDIENTE DEL NOMBRE DE USUARIO. EJEMPLO, CARPETA PERSONAL DEL COMPUTADOR.
+						$respuesta_shell=$conexion->exec("./client $comando");
+						//echo $respuesta_shell;
+						if ((strstr($respuesta_shell, "Error"))||(strstr($respuesta_shell, "bash"))){
+							echo "Error (web): cliente no disponible: '$respuesta_shell'";
 						}
-						fila.setAttribute("class","tabla_fila");
-						tbody.appendChild(fila);
+						else{
+							/* si se está acá, se recibió los nombres de los dispositivos.*/
+							/* Generar tabla con los elementos disponibles.*/
+							?><script type='text/javascript'><?php
+							/* crear arreglos con nombres de dispositivos, parámetros ajustables y valores de parámetros para cada dispositivo*/
+							echoDisps($respuesta_shell);
+							?>
+							//Espacio para los scripts
+							function drawTable(){
+								//obtener div donde irá la tabla
+								var divdebug=document.getElementById("debug");
+								var divtabla=document.getElementById("divtabla");
+								var tabla=document.createElement("table");
+								tabla.setAttribute("id","tabla");
+								var thead = document.createElement("thead");
+								thead.setAttribute("id","thead");
+								var tabla_header=document.createElement("tr");
+								tabla_header.innerHTML="<td class='th_switches'>Nombre Dispositivo</td>"
+								for (var param=0;param<param_names.length;param++){
+									tabla_header.innerHTML=tabla_header.innerHTML+"<td class='th_switches'>"+param_names[param]+"</td>";
+								}
+								tabla_header.setAttribute("id","tabla_header");
+								thead.appendChild(tabla_header);
+								tabla.appendChild(thead);
+								var tbody = document.createElement("tbody");
+								tbody.setAttribute("id","tbody");
+								/* agregar filas según cuántos elementos haya */
+								for (var i=0;i<disp_names.length;i++){
+									var fila=document.createElement("tr");
+									fila.innerHTML+="<td class='td_switches'>"+disp_names[i]+"</td>";
+									for (var j=0; j<param_names.length; j++){
+										var texto="";
+										switch (param_names[j]){
+											case "power":
+												texto="<td class='td_switches'><input type='image' id='switch' width='95%' src='images/switch_"+valores[i][j]+".png' alt='switch_"+valores[i][j]+".png' onclick='enviar("+i+","+0+","+(valores[i][j]==0?1:0)+");' /></td>";
+												break;
+											default:
+												texto="<td class='td_switches'>"+valores[i][j]+"</td>";
+										}
+										fila.innerHTML+=texto;
+									}
+									fila.setAttribute("class","tabla_fila");
+									tbody.appendChild(fila);
+								}
+								tabla.appendChild(tbody);
+								divtabla.appendChild(tabla);
+							}
+							</script><?php
+						}
 					}
-					tabla.appendChild(tbody);
-					divtabla.appendChild(tabla);
-				}
-				</script><?php
-			}
-		}
-	}// fin del else que permite meterse a la sesión
-		?>
-		<br><div id="output"></div>
-		<div id="debug"></div>
-		<br><a href="logout.php" class="boton">Logout</a>
-	</div>	
+				}// fin del else que permite meterse a la sesión
+					?>
+					<br><div id="output"></div>
+					<div id="debug"></div>
+					<br><a href="logout.php" class="boton">Logout</a>
+				</div>
+			</div>
+		</div>	
 	</body>
 </html>
 <?php 	

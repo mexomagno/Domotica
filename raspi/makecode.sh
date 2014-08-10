@@ -137,5 +137,5 @@ then
 fi
 echo "Listo. Borrando archivos temporales creados..."
 cd ..
-#rm -R generados
+rm -R -f generados
 echo "Listo. Tarea finalizada con éxito :)"
