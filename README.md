@@ -6,8 +6,9 @@
 	<br><br>
 <h3>Por hacer:</h3>
 <ul>
-	<li>Rediseño de interfaz</li>
+	<li><del>Rediseño de interfaz</del></li>
 	<li>Eliminar conexiones múltiples ssh para una misma sesión</li>
+	<li>Reparar administración de sesiones abiertas</li>
 	<li>Definir elementos de hardware</li>
 	<li>Posiblemente crear una aplicación para móviles</li>
 </ul>
