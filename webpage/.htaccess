@@ -1,0 +1,5 @@
+ErrorDocument 400 http://localhost/domotica/error.php?errno=400
+ErrorDocument 401 http://localhost/domotica/error.php?errno=401
+ErrorDocument 403 http://localhost/domotica/error.php?errno=403
+ErrorDocument 404 http://localhost/domotica/error.php?errno=404
+ErrorDocument 500 http://localhost/domotica/error.php?errno=500

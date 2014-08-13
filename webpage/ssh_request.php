@@ -78,7 +78,7 @@
 			exit("Error (web): Estado para el dispositivo no es válido");
 	}
 	/****** ETAPA 2: preparar conexión SSH ******/
-	set_include_path('phpseclib');
+	set_include_path('include/phpseclib');
 	include('Net/SSH2.php');
 	$conexion = new Net_SSH2($server,$port);
 	if (!$conexion->login($user, $pass)){
@@ -86,7 +86,7 @@
 	}
 
 	/****** ETAPA 3: enviar comando al arduino, cumpliendo protocolo ******/
-	$comando = "$disp power $value";
+	$comando = "$disp $param $value";
 	//$ruta_arduino= "/dev/serial/by-id/".$conexion->exec("ls /dev/serial/by-id/ | grep arduino");
 	//if ($debug) echo "ruta al arduino: ".$ruta_arduino."<br>";
 	/* validar que arduino está conectado */

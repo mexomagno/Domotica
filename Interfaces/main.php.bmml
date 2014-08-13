@@ -17,7 +17,7 @@
         <text>Dispositivos%0ACuenta</text>
       </controlProperties>
     </control>
-    <control controlID="4" controlTypeID="com.balsamiq.mockups::LinkBar" x="342" y="448" w="-1" h="-1" measuredW="320" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
+    <control controlID="4" controlTypeID="com.balsamiq.mockups::LinkBar" x="342" y="448" w="-1" h="-1" measuredW="319" measuredH="21" zOrder="3" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Acerca%20de%2C%20FAQ%2C%20%A1Aportar%21%2C%20Contactar%2C%20Links</text>
       </controlProperties>
@@ -68,5 +68,7 @@
         </control>
       </groupChildrenDescriptors>
     </control>
+    <control controlID="17" controlTypeID="com.balsamiq.mockups::Canvas" x="761" y="86" w="120" h="392" measuredW="100" measuredH="70" zOrder="8" locked="false" isInGroup="-1"/>
+    <control controlID="18" controlTypeID="com.balsamiq.mockups::Canvas" x="43" y="86" w="120" h="392" measuredW="100" measuredH="70" zOrder="9" locked="false" isInGroup="-1"/>
   </controls>
 </mockup>

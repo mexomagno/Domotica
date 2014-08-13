@@ -5,31 +5,11 @@
 		<meta charset="UTF-8">
 		<meta name="description" content="Controle toda su casa desde cualquier parte del mundo!"/>
 		<meta name="author" content="Maximiliano Castro"/>
-		<link rel="shortcut icon" href="images/favicon_jake.ico">
-		<!-- JQUERY para animaciones -->
-		<script src="include/jquery-1.10.2.js"></script>
-		<script src="include/jquery-ui.js"></script>
-		<script src="jquery_css.js" type="text/javascript"></script>
-		<!--<script language="javascript" src="scripts.js" type="text/javascript"></script>-
-		<script language="javascript" src="index.js" type="text/javascript"></script>-->
+		<link rel="shortcut icon" href="images/favicon.ico">
 		<link rel="stylesheet" type="text/css" href="styles.css">
-		<script type="text/javascript">
-			function clearError(){
-				document.getElementById("errormsg").innerHTML="";
-			}
-			function writeError(errno){
-				var div=document.getElementById("errormsg");
-				switch (errno){
-					case 1: 
-						div.innerHTML="Usuario y/o contraseña incorrectos";
-						break;
-					//Agregue más mensajes de error aquí
-				}
-			}
-		</script>
 	</head>
 	<body>
-		<img id="background" src="images/background.jpg" alt="background.jpg">
+		<div id="background_filter"></div>
 		<div id="screen"></div>
 		<div id="barra_recuadro_index">
 			<div id="recuadro_index">
@@ -57,6 +37,25 @@
 				</div>
 			</div>
 		</div>
+		<!-- JAVASCRIPT -->
+		<!-- JQUERY para animaciones -->
+		<script src="include/jquery-1.10.2.js"></script>
+		<script src="include/jquery-ui.js"></script>
+		<script src="jquery_css.js" type="text/javascript"></script>
+		<script type="text/javascript">
+			function clearError(){
+				document.getElementById("errormsg").innerHTML="";
+			}
+			function writeError(errno){
+				var div=document.getElementById("errormsg");
+				switch (errno){
+					case 1: 
+						div.innerHTML="Usuario y/o contraseña incorrectos";
+						break;
+					//Agregue más mensajes de error aquí
+				}
+			}
+		</script>
 	</body>
 </html>
 

@@ -1,25 +1,44 @@
 /* INDEX.PHP */
-
 body {
 	margin: 0;
 	background-color: #eee;
-	-webkit-font-smoothing: antialiased; /* font smoothing... */
+	/*-webkit-font-smoothing: antialiased; /* font smoothing... *
 	text-rendering: optimizeLegibility;
-	text-shadow: 1px 1px 1px rgba(0,0,0,0.004); /* ... hasta acá */
-	text-align: center;
+	text-shadow: 1px 1px 1px rgba(0,0,0,0.004); /* ... hasta acá *
+	text-align: center;*/
 	font-family: "Arial", sans-serif;
 	font-size:80%;
 	color: #555;
+	background: url('images/background.jpg') no-repeat center center fixed;
+	-webkit-background-size: cover;
+  	-moz-background-size: cover;
+ 	-o-background-size: cover;
+	background-size: cover;
 }
-#background {
-	width: 100%;
-	opacity: 0.4;
+#screen {
 	position: fixed;
-	z-index: -1;
+	height: 100%;
+	width: 100%;
+	background-color: white;
 	top: 0;
 	left: 0;
+	z-index: 1000;
+	display: block;
+	pointer-events: none;
+}
+#background_filter {
+	position: fixed;
+  	height: 150%;
+  	width: 150%;
+	top: 0;
+	left: 0;
+	z-index: -1;
+	opacity: 0.6;
 	overflow: hidden;
-	margin: auto ;
+	margin: 0px;
+	padding: 0px;
+	background-color: white;
+	pointer-events: none;
 }
 #barra_recuadro_index {
 	width: 100%;
@@ -75,30 +94,14 @@ body {
 #errormsg {
 	color: #c00;
 }
-#screen {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	background-color: white;
-	top: 0;
-	z-index: 1000;
-	display: block;
-}
-h1 {
-}
 /* MAIN.PHP */
-
-#body_wrap{
-	/*margin: 40px 100px;*/
-}
-#barra_recuadro_main {
+/*#barra_recuadro_main {
 	width: 100%;
 	height: auto;
 	overflow: hidden;
 	display: block;
-	background-color: rgba(255,255,255,0.7);
-	padding: 50px 0 50px 0;
-	margin-top: 100px;
+	background-color: rgba(255,255,255,1);
+	margin: 20px 0px 20px 0px;
 	text-align: center;
 }
 #recuadro_main {	
@@ -107,8 +110,61 @@ h1 {
 	margin-right: auto;
 	width: auto;
 	/*margin: 0 auto;
-	padding: 100px;*/
+	padding: 100px;*
+}*/
+html, body{
+	height:100%;
 }
+.fill {
+	height: 100%;
+}
+.row.relleno {
+	height: 0px
+}
+#logo_main {
+	height:100px;
+	margin-left: auto;
+	margin-right: auto;	
+	margin-top: 20px;
+	margin-bottom: 20px;
+	opacity: 0.4;
+}
+.fila_logo{
+	border-top: 1px solid #fbab00;
+	border-bottom: 1px solid #eee;
+	height: 140px;
+	padding-top: 1px;
+}
+.fila_logo.col_derecha{
+	padding-top: 50px;
+	padding-left: 50px;
+	font-size: 170%;
+	font-style: italic;
+	font-family: Arial, Helvetica, sans-serif;
+	color: #666;
+	text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+}
+.fila_logo.col_derecha > strong{
+	color: #fbab00;
+}
+.fila_logo.imagen_frase {
+	text-align: right;
+}
+#imagen_frase {
+	opacity: 0.4;
+	height:100%;
+}
+.col_izquierda{
+	text-align: right;
+}
+#panel_botones{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+.col_derecha{
+	border-left: 1px solid #ddddd8;
+}
+/*
 #tabla{
 	height : 1px;
 	background-color: #fff4f4;
@@ -124,19 +180,51 @@ h1 {
 	background-color: #EEF6FF;
 }
 .td_switches{
-	border : 1px solid #8899BB;
-	width : 100px;
-	padding: 10px;
-	height : 100%;
+}*/
+.switch {
+	width : auto;
+	height : 50px; /* debe ser igual con .loading_icon */
 }
-
-#switch:hover{
-	width: 101%;
+.switch:hover{
+	opacity: 0.5;
 }
-a {
-	text-decoration: none;
+.loading_icon{
+	height:50px; /* debe ser igual con .switch */
+	width: auto;
+	text-align: left;
+	background-image: url("images/loading2.gif");
+	background-repeat: no-repeat;
+	background-size: 50px auto;
 }
 #output{
 	width:200px;
 	margin: 0  auto;
+}
+/* REESCRITURAS DE BOOTSTRAP */
+.container{
+	background-color: #FAFAFA;
+	padding: 50px 0px 50px 0px;
+}
+.nav-pills > li > a{
+	border-bottom: 1px solid #ddddd8;
+	border-radius: 0px !important;
+}
+.nav-pills > li.active > a, .nav-pills > li.active > a:hover, .nav-pills > li.active > a:focus {
+    color: #666  !important;
+    border-left: 2px solid #fbab00;
+	background-color: #ddddd8 !important;
+	font-weight: bolder;
+}
+a:hover, a:focus{
+	color: #888 !important;
+	text-decoration: none !important;
+}
+a.boton:hover, a.boton:focus{
+	text-decoration: none !important;
+}
+a.boton{
+	color: white !important;
+}
+a {
+	color: #888 !important;
 }
