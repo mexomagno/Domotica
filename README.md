@@ -6,8 +6,13 @@
 	<br><br>
 <h3>Por hacer:</h3>
 <ul>
-	<li>Rediseño de interfaz</li>
-	<li>Eliminar conexiones múltiples ssh para una misma sesión</li>
+	<li><del>Rediseño de interfaz</del> (Totalmente subjetivo)</li>
+	<li><del>Eliminar conexiones múltiples ssh para una misma sesión</del> (No se pudo, pero no afecta en casi nada)</li>
+	<li><del>Reparar administración de sesiones abiertas</del></li>
+	<li>Estandarizar los mensajes de error, en todo el proceso de comunicación</li>
+	<li>Consolidar sistema de timeouts para evitar estados inconsistentes</li>
+	<li>Cambiar php->texto_horrible->javascript a php->JSON->javascript</li>
+	<li>Mejorar seguridad en general (base de datos, conexión ssh)</li>
 	<li>Definir elementos de hardware</li>
 	<li>Posiblemente crear una aplicación para móviles</li>
 </ul>

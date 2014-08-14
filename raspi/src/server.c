@@ -123,7 +123,7 @@ void intHandler(int signum){
 	exit(0);
 }
 
-void *getArduinoPort(char resp[]){
+/*void *getArduinoPort(char resp[]){
 	char *path="/dev/serial/by-id/";
 	DIR *folder=opendir(path);
 	if (folder == NULL){
@@ -139,7 +139,7 @@ void *getArduinoPort(char resp[]){
 		}
 	}
 	if (found){
-		/* generar nombre del directorio */
+		/* generar nombre del directorio *
 		strcpy(resp,path);
 		strcat(resp,elem->d_name);
 		closedir(folder);
@@ -149,8 +149,8 @@ void *getArduinoPort(char resp[]){
 		resp[0] = 0;
 		return;
 	}
-}
-
+}*/
+/* checkError(condición, string para mostrar ante error, fd donde escribir string) */
 int checkError(char cond, char errorstring[],int fd){
 	if (cond){
 		if (VERBOSE || (fd>2)) write(fd, errorstring, strlen(errorstring)+1);//"%s: %s\n", errorstring,strerror(errno));
@@ -166,11 +166,11 @@ int checkError(char cond, char errorstring[],int fd){
 	else return 0;
 }
 
-int serialReadUntil(int fd, char *buf, char until){
+/*int serialReadUntil(int fd, char *buf, char until){
 	char b[1];
 	int i=0;
 	do{
-		/* leer un caracter a la vez */
+		/* leer un caracter a la vez *
 		int n = read(fd, b, 1);
 		if (n==-1) return -1;
 		if (n==0){
@@ -180,11 +180,11 @@ int serialReadUntil(int fd, char *buf, char until){
 		buf[i] = b[0];
 		i++;
 	}while (b[0] != until);
-	/* agregar eof al string y borrar el newline */
+	/* agregar eof al string y borrar el newline *
 	buf[i-1]=0;
 	printf("Arduino dice: '%s'\n", buf);
 	return strlen(buf)+1;
-}
+}*/
 /*
 int serialWrite(int fd, const char* str){
     int len = strlen(str);
@@ -194,32 +194,32 @@ int serialWrite(int fd, const char* str){
     checkError((m=write(fd, "\0" ,1))== -1, "Error (server): no se pudo enviar null character", 1);
     return 0;
 }*/
-int serialBegin(char pathout[]){
+/*int serialBegin(char pathout[]){
 	int serial;
 	if (checkError((serial=open(pathout, O_RDWR | O_NOCTTY)) == -1, "Error (server): No se pudo abrir el puerto serial (lectura)", 1));
 	/* configuración del tty para comunicarse con arduino */
-	/* tiempo para que se reinicie */
+	/* tiempo para que se reinicie *
 	sleep(2);
 	struct termios toptions;
 	tcgetattr(serial, &toptions);
 	/* set BAUD baud both ways */
-	/***************OJO, ASIGNAR ESTO SEGUN EL VALOR DE BAUD ************/
+	/***************OJO, ASIGNAR ESTO SEGUN EL VALOR DE BAUD ************
 	cfsetispeed(&toptions, B9600);
 	cfsetospeed(&toptions, B9600);
-	/* 8 bits, no parity, no stop bits */
+	/* 8 bits, no parity, no stop bits *
 	toptions.c_cflag &= ~PARENB;
 	toptions.c_cflag &= ~CSTOPB;
 	toptions.c_cflag &= ~CSIZE;
 	toptions.c_cflag |= CS8;
-	/* Canonical mode */
+	/* Canonical mode *
 	toptions.c_lflag |= ICANON;
-	/* commit the serial port settings */
+	/* commit the serial port settings *
 	tcsetattr(serial, TCSANOW, &toptions);
 	tcflush(serial, TCIFLUSH);
 	system("./.src/init_serial.sh"); //EN EL FUTURO, CHEQUEAR QUE ESTO SE PUDO HACER CON ÉXITO
 	usleep(10000);
 	return serial;
-}
+}*/
 
 void main(){
 	if (VERBOSE) printf("Iniciando servidor domótica...\n");
@@ -302,6 +302,7 @@ void main(){
 			/*n = serialReadUntil(serial, output, '\n');*/
 			/* actualizar estado de dispositivos en arreglo de structs dispositivos*/
 			updateDisps(input);
+			strcpy(output,"OK\0");
 		}
 		//write(conexion, "Arduino dice: ", strlen("Arduino dice: "));
 		write(conexion, output, strlen(output)+1);

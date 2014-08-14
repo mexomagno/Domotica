@@ -103,10 +103,4 @@
 	}
 	/****** ETAPA 4: leer lo que el arduino tenga que decir ******/
 	/****** ETAPA 5 Y FINAL: responder a la aplicación web ******/
-	/* 
-		Ideas futuras: generar este archivo a partir de otro, generado tras configurar 
-			qué dispositivos habrá disponibles para configurar. Por ahora, sólo está el led 13,
-			que se asigna como dispositivo 0. Al parecer el archivo a compilar por el arduino también
-			debiera generarse según esta configuración.
-	*/
 ?>

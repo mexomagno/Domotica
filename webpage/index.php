@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<?php
+	session_start();
+	if (isset($_SESSION['user_name'])){
+		header("Location: main.php");
+	}
+?>
 <html>
 	<head>
 		<title>Casa Inteligente</title>
@@ -15,7 +21,7 @@
 			<div id="recuadro_index">
 				<img id="index_logo" src="images/logo.png" alt="index_logo.png">
 				<h1>Inicio de sesión</h1>
-				<form method="POST" enctype="multipart/form-data" action="main.php" id="form">
+				<form method="POST" enctype="multipart/form-data" action="login.php" id="form">
 					<table>
 						<tr>
 							<td><label for="user">Usuario: </label></td><td><input id="user" name="user" type="text" class="text_input" onclick="clearError();"></td>
@@ -28,13 +34,7 @@
 					<input type="submit" value="Ingresar" id="boton_ingresar" class="boton">
 				</form>
 				<br><br>
-				<div id="errormsg">
-					<?php 
-						if (isset($_GET['msg'])) 
-						//echo "Usuario y/o contraseña incorrectos"
-							echo "<script type='text/javascript'>\nwriteError(".$_GET['msg'].");</script>";
-					?>
-				</div>
+				<div id="errormsg"></div>
 			</div>
 		</div>
 		<!-- JAVASCRIPT -->
@@ -42,20 +42,7 @@
 		<script src="include/jquery-1.10.2.js"></script>
 		<script src="include/jquery-ui.js"></script>
 		<script src="jquery_css.js" type="text/javascript"></script>
-		<script type="text/javascript">
-			function clearError(){
-				document.getElementById("errormsg").innerHTML="";
-			}
-			function writeError(errno){
-				var div=document.getElementById("errormsg");
-				switch (errno){
-					case 1: 
-						div.innerHTML="Usuario y/o contraseña incorrectos";
-						break;
-					//Agregue más mensajes de error aquí
-				}
-			}
-		</script>
+		<script src="index.js" type="text/javascript"></script>
 	</body>
 </html>
 

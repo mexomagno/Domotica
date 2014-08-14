@@ -77,6 +77,7 @@ body {
 	padding: 5px 10px 5px 10px;
 	border-radius: 4px;
 	color: white;
+	text-align: center;
 }/*
 .boton:hover{
 	background-color: #6666dd;
@@ -120,6 +121,9 @@ html, body{
 }
 .row.relleno {
 	height: 0px
+}
+#user_name{
+	bottom:10px;
 }
 #logo_main {
 	height:100px;
@@ -178,23 +182,33 @@ html, body{
 	color: #002266;
 	font-weight:bold;
 	background-color: #EEF6FF;
-}
-.td_switches{
 }*/
+.switch_container{
+	width: 120px;
+}
 .switch {
 	width : auto;
 	height : 50px; /* debe ser igual con .loading_icon */
+	background-repeat: no-repeat;
+	background-size: auto 100%;
+}
+.switch_0{
+	background-image: url("images/switch_0.png");
+}
+.switch_1{
+	background-image: url("images/switch_1.png");
 }
 .switch:hover{
 	opacity: 0.5;
 }
 .loading_icon{
 	height:50px; /* debe ser igual con .switch */
-	width: auto;
-	text-align: left;
-	background-image: url("images/loading2.gif");
+	width: 50px;
+	background-image: url("images/loading6.gif");
 	background-repeat: no-repeat;
-	background-size: 50px auto;
+	background-size: 50px 50px;
+	background-position:center;
+	opacity: 0.8;
 }
 #output{
 	width:200px;

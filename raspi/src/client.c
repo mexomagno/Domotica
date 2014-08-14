@@ -70,13 +70,13 @@ main(int argc, char *argv[]) {
    }
    /* 2: validar valores */
    /* 2.0: validar si es petición de nombres de dispositivos */
-   char getnames=0;
+   char getDisps=0;
    if (strcmp(argv[1],"getDisps")==0)
-      getnames=1;
+      getDisps=1;
    /* 2.1: validar número de dispositivo */
    int disp_id, param_index;
    char *value;
-   if (!getnames){
+   if (!getDisps){
       disp_id=strtol(argv[1],NULL,10);
       checkError((errno==EINVAL)||(errno==ERANGE), "Id de dispositivo inválida");
       checkError(disp_id>=NDISP, "No existe el dispositivo");
@@ -94,7 +94,7 @@ main(int argc, char *argv[]) {
    char input[BUF_SIZE];
    char output[BUF_SIZE];
    /* Concatenar parámetros en un string entendible por el arduino */
-   if (getnames)
+   if (getDisps)
       sprintf(input, "getDisps");
    else
       sprintf(input, "%d-%d-%s", disp_id, param_index, value);
