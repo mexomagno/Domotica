@@ -13,6 +13,9 @@
 	<body>
 		<div id="background_filter"></div>
 		<div id="screen"></div>
+		<div class="container">
+			
+		</div>
 		<!-- JAVASCRIPT -->
 			<!--JQUERY-->
 			<script src="include/jquery-1.10.2.js"></script>

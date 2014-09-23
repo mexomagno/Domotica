@@ -114,7 +114,7 @@ body {
 	padding: 100px;*
 }*/
 html, body{
-	height:100%;
+	/*height:100%;*/
 }
 .fill {
 	height: 100%;
@@ -204,6 +204,8 @@ html, body{
 .loading_icon{
 	height:50px; /* debe ser igual con .switch */
 	width: 50px;
+	margin-left: auto;
+	margin-right: auto;
 	background-image: url("images/loading6.gif");
 	background-repeat: no-repeat;
 	background-size: 50px 50px;
@@ -213,6 +215,11 @@ html, body{
 #output{
 	width:200px;
 	margin: 0  auto;
+}
+
+/* agregar_cliente.php */
+.container_agregarcliente{
+	font-size: 180%;
 }
 /* REESCRITURAS DE BOOTSTRAP */
 .container{

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+	/* Comprobar que el usuario ingresa a este vínculo por haber iniciado sesión */
 	session_start();
 	if (!isset($_SESSION['user_name'])){
 		//echo "<script>console.log('not set!')</script>";
@@ -11,7 +12,7 @@
 	/* 1: Obtener información desde base de datos para conectarse con el servidor domótico.
 			Específicamente obtener: nombre del host, puerto, usuario del host, contraseña del mismo. */
 	require("db_connect.php");
-	if (!($stmt = $db_link->prepare("SELECT hostname, puerto, usuarios_domotica.usuario, usuarios_domotica.password
+	if (!($stmt = $db_link->prepare("SELECT hostname, puerto, usuarios_domotica.usuario, usuarios_domotica.password, usuarios_web.tipo
 									 FROM (usuarios_web JOIN servidores_domotica 
 									 		ON usuarios_web.id_servidor_domotica = servidores_domotica.id_servidor_domotica) JOIN usuarios_domotica 
 													ON usuarios_domotica.id = servidores_domotica.id_user
@@ -25,7 +26,7 @@
 		}
 	$stmt->bind_param('s',$_SESSION['user_name']);
 	$stmt->execute();
-	$stmt->bind_result($dom_hostname, $dom_puerto, $dom_usuario, $dom_password);
+	$stmt->bind_result($dom_hostname, $dom_puerto, $dom_usuario, $dom_password, $user_type);
 	$stmt->store_result();
 	$filas=$stmt->num_rows;
 	$stmt->fetch();
@@ -35,6 +36,11 @@
 		echo "<script>alert('Ha habido un problema al buscar la información del usuario')</script>";
 		sleep(5000);
 		header("Location: logout.php");
+	}
+	/* 1.5: Si el usuario es administrador del sistema, llevarlo a la página de agregar o quitar usuarios.*/
+	if ($user_type == 'A'){
+		header("Location: agregar_cliente.php");
+		//exit();
 	}
 	/* 2: Establecer la conexión */
 	$_SESSION['getDisps']=1;

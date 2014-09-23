@@ -56,7 +56,8 @@ function enviarSSH(dispositivo, parametro, estado){
 	$.ajax({
 		beforeSend: function (){
 			//$('#errormsg').html("BEFORE SEND!!!!!");
-			$('#switch_'+dispositivo).fadeOut(fade_speed,function(){$('#loading_icon_'+dispositivo).fadeIn(fade_speed);});
+			/* desactivar switch, animar fade out y fade in para gif de loading */
+			$('#switch_'+dispositivo).attr("onclick","").fadeOut(fade_speed,function(){$('#loading_icon_'+dispositivo).fadeIn(fade_speed);});
 		},
 		url: "ssh_request2.php",
 		type: "POST",
@@ -65,7 +66,7 @@ function enviarSSH(dispositivo, parametro, estado){
 			var msg;
 			switch(respuesta){
 				case "":
-					msg="Respuesta correcta. "+respuesta;
+					msg=""+respuesta;
 					var prev_state;
 					switch (parametro){
 			    		case 0: //power. Hay que setearlo en 0 si era 1, y en 1 si era 0.
