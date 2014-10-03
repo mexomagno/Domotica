@@ -7,9 +7,9 @@
 #define BUF_SIZE 200
 #define CVERBOSE 1
 #define NDISP 1
-#define NPARAMS 1 /* DEBE CALZAR CON LOS ELEMENTOS DEL ARREGLO params */
-
-char *params[NPARAMS]={"power"}; /* EXTENSIBLE */
+#define NPARAMS 3 /* DEBE CALZAR CON LOS ELEMENTOS DEL ARREGLO params */
+ /*  #paramdef: Inserte parametros aqui */
+char *params[NPARAMS]={"power","start_time","stop_time"};
 //char *power_values[]={"ON", "OFF"};
 //char **values[]={power_values};
 
@@ -27,34 +27,56 @@ void checkError(char cond, char errorstring[]){
       exit(1);
    }
 }
-
-// void givenames(){
-//    int i;
-//    for (i=0; i<NDISP; i++){
-//       printf("%s ", nombres[i]);
-//    }
-//    printf("\n");
-//    exit(0);
-// }
 /* isParam(param) retorna -1 si no existe el parámetro.
    Si existe, retorna subíndice del parámetro */
 int isParam(char *candidato){
    int i;
    for (i=0; i<NPARAMS; i++){
-      if (strcmp(params[i], candidato)==0)
+      if (strcmp(params[i], candidato)==0){
+         printf("i es %d, entre porque params[%d] es igual a %s\n",i,i,candidato);
          return i;
+      }
    }
    return -1;
 }
 /* isValue(candidato, indice) retorna 1 si el candidato es parametro valido, 0 si no. */
-/* Este método está HARDCODEADO. POCO GENERAL. */
+/* #paramdef: Inserte parámetros aquí. */
 int isValue(char *candidato, int param_index){
+   printf("Entre a isValue. Paramindex es %d y candidato es %s\n",param_index,candidato);
+   char aux[BUF_SIZE];
+   int num;
    switch (param_index){
       case 0: //power
          if ((!strcmp(candidato, "ON")) || (!strcmp(candidato, "OFF")))
             return 1;
          break;
+      case 1: //start_time
+      case 2: //stop_time
+         /* Formato correcto: hh:mm:ss */
+         /* 1: Verificar que tenga ese formato*/
+         if (candidato[0]=='X')
+            return 1;
+         else{
+            strcpy(aux,candidato);
+            char *token;
+            token = strtok(aux,":");
+            if (token==NULL) return 0;
+            num = (int)strtol(token,NULL,10);
+            checkError((num>=24)||(num<0), "Valor inválido de hora");
+            token = strtok(NULL,":");
+            if (token==NULL) return 0;
+            num = (int)strtol(token,NULL,10);
+            checkError((num>=60)||(num<0), "Valor inválido de minutos");
+            token = strtok(NULL,":");
+            if (token==NULL) return 0;
+            num = (int)strtol(token,NULL,10);
+            checkError((num>=60)||(num<0), "Valor inválido de segundos");
+            printf("isValue retorna 1 porque candidato=%s para parametro %d\n",candidato,param_index);
+            return 1;
+         }
+         break;
       default:
+         printf("pase al default :( \n");
          return 0;
    }
    return 0;
@@ -77,13 +99,14 @@ main(int argc, char *argv[]) {
    int disp_id, param_index;
    char *value;
    if (!getDisps){
-      disp_id=strtol(argv[1],NULL,10);
+      disp_id=(int)strtol(argv[1],NULL,10);
       checkError((errno==EINVAL)||(errno==ERANGE), "Id de dispositivo inválida");
       checkError(disp_id>=NDISP, "No existe el dispositivo");
       /* 2.2: validar parámetro a configurar */
       char *param=argv[2];
-      param_index;
-      checkError((param_index=isParam(param)==-1),"Opción inválida");
+      param_index=isParam(param);
+      printf("param_index es %d\n",param_index);
+      checkError((param_index==-1),"Opción inválida");
       /* 2.3: validar valor del parametro */
       value=argv[3];
       checkError(isValue(value, param_index)==0, "Valor inválido para el parámetro");
@@ -93,14 +116,15 @@ main(int argc, char *argv[]) {
    int cnt, n;
    char input[BUF_SIZE];
    char output[BUF_SIZE];
-   /* Concatenar parámetros en un string entendible por el arduino */
+   int port=1235;
+   /* Concatenar parámetros en un string entendible por el raspberry */
    if (getDisps)
       sprintf(input, "getDisps");
    else
       sprintf(input, "%d-%d-%s", disp_id, param_index, value);
    s = j_socket();
 
-   checkError(j_connect(s, "localhost", 1818) < 0, "Servidor no responde");
+   checkError(j_connect(s, "localhost", port) < 0, "Servidor no responde");
    //write(a,b,c) escribe hasta c bytes en el fd a, lo que está en el buffer b. Retorna cantidad de bytes escritos.
    int cuantos = write(s, input, strlen(input) +1);
    if (CVERBOSE) printf("%d bytes enviados al servidor\n", cuantos);
