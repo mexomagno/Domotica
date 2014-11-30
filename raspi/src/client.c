@@ -116,7 +116,7 @@ main(int argc, char *argv[]) {
    int cnt, n;
    char input[BUF_SIZE];
    char output[BUF_SIZE];
-   int port=1235;
+   int port=1818;
    /* Concatenar parámetros en un string entendible por el raspberry */
    if (getDisps)
       sprintf(input, "getDisps");

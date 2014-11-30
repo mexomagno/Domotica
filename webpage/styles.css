@@ -147,8 +147,9 @@ html, body{
 	font-family: Arial, Helvetica, sans-serif;
 	color: #666;
 	text-shadow: 0px 0px 10px rgba(0,0,0,0.3);
+	text-align: center;
 }
-.fila_logo.col_derecha > strong{
+/*.fila_logo.col_derecha*/#frases > strong{
 	color: #fbab00;
 }
 .fila_logo.imagen_frase {
@@ -215,8 +216,29 @@ html, body{
 #output{
 	width:200px;
 	margin: 0  auto;
+}/*
+.hora_num{
+	font-size:80%;
+	width: 40px;
+	padding-left:0px;
+	padding-right:0px;
 }
-
+*/
+.hora_texto{
+	width:67px;
+}
+.td_horarios{
+	text-align: center;
+	font-size: 90%;
+}
+.filas_h{
+	color: black !important;
+	font-weight: bolder;
+}
+.filas_h[disabled]{
+	color: #aaa !important;
+	font-weight: normal;
+}
 /* agregar_cliente.php */
 .container_agregarcliente{
 	font-size: 180%;
@@ -248,4 +270,29 @@ a.boton{
 }
 a {
 	color: #888 !important;
+}
+/* REESCRITURAS DE TIMEPICKI*/
+.time, .mins, .meridian{
+	width: 10px !important;
+	font-size: 14px !important;
+	margin: 0px 8px !important;
+}
+.prev, .next{
+	padding: 10px !important;
+}
+.prev {
+	background-position: 50% -12% !important;
+}
+.next {
+	background-position: 50% 105% !important;
+}
+.ti_tx, .mi_tx, .mer_tx{
+	margin: 2px 0px !important;
+}
+.time_pick{
+	width: 75px !important;
+	display: inline-block !important;
+}
+.timepicker_wrap{
+	padding-left: 0px !important;
 }

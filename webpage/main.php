@@ -53,16 +53,21 @@
 	/* echoDisps escribe texto que será procesado por javascript. Crea arreglos con los datos necesarios para que javascript sea
 	capaz de dibujar la tabla de dispositivos */
 	function echoDisps($respuesta_shell){
+		/* arreglo con strings de info de cada dispositivo. 
+		Ej: LED_ROJO.power:0.start_time:h1-NULL.stop_time:h1-NULL */
 		$disp_array=explode(" ", trim($respuesta_shell));
-		/* obtener parámetros configurables hasta ahora, es decir power, tiempo inicio quizás, etc.*/
+		/* arreglo con strings con todos los parámetros del dispositivo.
+		Ej: {"LED_ROJO", "power:0", "start_time:h1-NULL", "stop_time:h1-NULL"} */
 		$fila_sample=explode(".",$disp_array[0]);
+		/* arreglo con los nombres de todos los parámetros
+		Ej: {"power","start_time","stop_time"}*/
 		$param_names=array();
 		for ($i=1;$i<sizeof($fila_sample);$i++){ //comienza en 1 porque 0 es el nombre del dispositivo
 			/* recorre los parámetros, elimina el valor de cada uno y guarda sus nombres en arreglo de parametros */
 			$todo=explode(":",$fila_sample[$i]);
 			array_push($param_names,$todo[0]);
 		}
-		/* $param_names tiene nombres de cada parámetro de los dispositivos. Ej: power */
+		/* $param_names tiene nombres de cada parámetro de los dispositivos. Ej: power, start_time, stop_time */
 		/* Crear arreglo con nombres de los parámetros */
 		$html="var param_names=[";
 		for ($i=0;$i<sizeof($param_names);$i++){
@@ -90,11 +95,10 @@
 				$separar=explode(".",$line); //LED_ROJO power:1 otroparametro:1000
 				$valores=explode(":",$separar[$param+1]); //power 1
 				$valor=$valores[1];
-				$html=$html.$valor;
+				$html="$html\"$valor\"";
 				if ($param<sizeof($param_names)-1)
 					$html=$html.",";
 			}
-			//val valores = [[1],[0],[1]];
 			$html=$html."]";
 			if ($disp<sizeof($disp_array)-1)
 				$html="$html,";
@@ -114,15 +118,28 @@
 		<link rel="stylesheet" href="styles.css" type="text/css">
 		<link rel="shortcut icon" href="images/favicon.ico">
 		<link rel="stylesheet" href="include/bootstrap/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="include/TimePicki/css/timepicki.css">
 		<script type="text/javascript">
 		<?php
 			$comando="getDisps";
 			$respuesta_shell=$ssh_link->exec("./client $comando");
 			echoDisps($respuesta_shell);
 		?>
+		var frases = [	"Ahora su casa es <strong>más inteligente</strong> que usted...",
+						"Lo echamos <strong>mucho</strong> de menos!", 
+						"Lorea ta entera <strong>wena</strong> la página!",
+						"Al final, Walter White <strong>muere</strong>",
+						"( <strong>͡°</strong> ͜ʖ <strong>͡°</strong>)"];
+		var fraseindex=0;
+		function toggleFrase(){
+			var fadespeed=600;
+			$("#frases").fadeOut(fadespeed,function (){$("#frases").html(frases[fraseindex]).fadeIn(fadespeed);});
+			fraseindex = (fraseindex + 1) % frases.length;
+		}
+		window.setInterval(toggleFrase, 10000);
 		</script>
 	</head>
-	<body onload="drawTable();">
+	<body onload="drawTable(); toggleFrase();">
 		<div class="container fill">
 			<div id="background_filter"></div>
 			<div id="screen"></div>
@@ -142,7 +159,7 @@
 						<img class="img-responsive img-rounded" src="images/logo.png" alt="logo.png" id="logo_main">
 					</div>
 					<!-- frase y adornos -->
-					<div class="col-md-6 fila_logo col_derecha">Frase inspiradora <strong>aquí</strong></div>
+					<div class="col-md-6 fila_logo col_derecha"><div id="frases"></div></div>
 					<div class="col-md-4 fila_logo imagen_frase"><img id="imagen_frase" src="images/modern_house.jpg" alt="modern_house.jpg"></div>
 				</div>	
 				<!-- Fila con botones y contenido -->
@@ -173,9 +190,11 @@
 		</div>
 		<!-- JAVASCRIPT -->
 			<!--JQUERY-->
-			<script src="include/jquery-1.10.2.js"></script>
+			<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 			<script src="include/jquery-ui.js"></script>
 			<script src="jquery_css.js" type="text/javascript"></script>
+			<!--TimePicki-->
+			<script src="include/TimePicki/js/timepicki.js"></script>
 			<!--BOOTSTRAP-->
 			<script src="include/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 			<!--CUSTOM-->

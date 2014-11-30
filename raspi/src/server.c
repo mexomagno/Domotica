@@ -13,7 +13,7 @@
 #define BUF_SIZE 200
 #define PATH_SIZE 80
 #define VERBOSE 1
-#define BAUD 9600
+//#define BAUD 9600
 #define NDISP 1
 #define NHORAS 5 /* Distintas horas en el día en que el dispositivo puede encenderse y apagarse.
 
@@ -243,15 +243,16 @@ void getDisps(char *resp){
 		sprintf(aux_string, "%d", disp.power);
 		strcat(resp, aux_string);
 		/* START_TIME */
-		sprintf(aux_string, " .start_time:");
+		sprintf(aux_string, ".start_time:");
 		strcat(resp, aux_string);
 		hora2text(disp.start_time,aux_string);
 		strcat(resp, aux_string);
 		/* STOP_TIME */
-		sprintf(aux_string, " .stop_time:");
+		sprintf(aux_string, ".stop_time:");
 		strcat(resp, aux_string);
 		hora2text(disp.stop_time,aux_string);
 		strcat(resp, aux_string);
+		strcat(resp, " ");
 		/* #paramdef: más posibles parámetros se pueden agregar acá */
 	}
 	//return resp;
@@ -345,7 +346,7 @@ void main(){
 	sa.sa_handler = intHandler;
 	if (checkError(sigaction(SIGINT, &sa, NULL)<0, "Error (server): Imposible crear signal", 1))
 		exit(1);
-	int port=1235;
+	int port=1818;
 	/* crear socket */
 	int socket;
 	if (VERBOSE) printf("Creando socket... ");

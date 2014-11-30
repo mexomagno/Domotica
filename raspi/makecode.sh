@@ -21,7 +21,7 @@ cp "$srcdir/jsocket6.4.c" generados/
 #mkdir generados/arduserver -p
 #cp "$srcdir/arduserver/arduserver.ino" generados/arduserver/
 cd generados/
-opciones=( "#define BUF_SIZE" "#define PATH_SIZE" "#define VERBOSE" "#define CVERBOSE" )
+opciones=( "#define BUF_SIZE" "#define PATH_SIZE" "#define VERBOSE" "#define CVERBOSE" "#define NHORAS" )
 NDISP=$(grep -c "^#disp:" ../$conffile)
 mensaje="/********** Auto-generado por makecode.sh **********/"
 #generar server.c
@@ -103,11 +103,11 @@ sed -i "s/^#define NDISP.*/#define NDISP $NDISP/" client.c
 #generar makefile
 echo "Creando Makefile..."
 echo "server:" > Makefile
-echo -e "\tgcc server.c jsocket6.4.c -o ../server" >> Makefile
+echo -e "\tgcc server.c jsocket6.4.c -o ../server -lpthread" >> Makefile
 echo "client:" >> Makefile
 echo -e "\tgcc client.c jsocket6.4.c -o ../client" >> Makefile
 echo "all:" >> Makefile
-echo -e "\tgcc server.c jsocket6.4.c -o ../server" >> Makefile
+echo -e "\tgcc server.c jsocket6.4.c -o ../server -lpthread" >> Makefile
 echo -e "\tgcc client.c jsocket6.4.c -o ../client" >> Makefile
 echo "clean:" >> Makefile
 echo -e "\trm ../server ../client ../*~ ../*.o" >> Makefile
