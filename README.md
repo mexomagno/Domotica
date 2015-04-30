@@ -1,3 +1,5 @@
+> <h3>Casi totalmente DEPRECADO</h3>
+
 <h1>Domotica</h1>
 <h5>Proyecto personal de automatización de hogar.</h5>
 <hl>
