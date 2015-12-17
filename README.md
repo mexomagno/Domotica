@@ -1,4 +1,5 @@
-> <h3>Casi totalmente DEPRECADO</h3>
+> <h3>DEPRECADO</h3>
+> <h5>... pero fue divertido!</h5>
 
 <h1>Domotica</h1>
 <h5>Proyecto personal de automatización de hogar.</h5>
